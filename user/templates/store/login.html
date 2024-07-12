@@ -1,0 +1,24 @@
+{% extends "_base.html" %} 
+{% block title %} Đăng nhập vào Store {% endblock title %}
+
+{% block content%}
+<h2>Đăng nhập như Store</h2>
+<div class="mb-3">
+  <form method="post">
+    {% csrf_token %} 
+    {% for field in form %}
+    <div class="mb-3">
+      <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+    <div class="mb-3" style="margin-top: -23px; margin-left: 70px; font-size: 14px;">
+      <a href="{% url 'account_reset_password' %}">Quên mật khẩu?</a>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-warning">Đăng nhập</button>
+      <span>Bạn chưa có tài khoản? <a href="{% url 'store_signup' %}">Đăng ký</a></span>
+    </div>
+  </form>
+</div>
+{% endblock content %}

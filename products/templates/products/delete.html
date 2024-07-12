@@ -1,0 +1,16 @@
+{% extends "_base.html" %} 
+{% block title %} Xóa sản phẩm {% endblock title %}
+
+{% block content%}
+<h2>Xóa sản phẩm</h2>
+<div class="mb-3">
+  <p>Bạn có muốn xóa sản phẩm "{{ object }}"?</p>
+  <div class="d-flex">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+    </form>
+    <a href="{{ product.get_absolute_url }}" class="ms-3 mt-2">Hủy</a>
+  </div>
+</div>
+{% endblock content %}

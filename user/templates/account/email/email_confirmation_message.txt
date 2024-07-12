@@ -1,0 +1,19 @@
+{% comment %} email body {% endcomment %}
+{% load account %}
+{% user_display user as user_display %}
+{% load i18n %}
+
+{% autoescape off %}
+  {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+    Xin chào {{ site_name }}!
+
+    Bạn nhận được email này vì người dùng {{ user_display }} đã cung cấp địa chỉ email của bạn để kết nối tài khoản của họ.
+
+    Để xác nhận điều này là chính xác, hãy truy cập {{ activate_url }}
+  
+  {% endblocktrans %}
+{% endautoescape %}
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+  Thank you from {{ site_name }}!
+  {{ site_domain }}
+{% endblocktrans %}

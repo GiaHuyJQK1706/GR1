@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+{% block title %} 
+Gyapu - {{ profile.user.username }}
+{% endblock title %} 
+
+{% block content %}
+  <div class="mb-3">
+    <h1>Chi tiết khách hàng</h1>
+
+    <p>Email: {{ profile.user.email }}</p>
+    <p>Tên: {{ profile.user.full_name }}</p>
+    <p>MĐT: {{ profile.user.mobile }}</p>
+  </div>
+{% endblock content %}

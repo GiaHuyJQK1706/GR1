@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block title %}
+  Đăng xuất
+{% endblock title %}
+
+{% block content %}
+  <h2>Đăng xuất</h2>
+  <p>Bạn có muốn đăng xuất tài khoản không?
+  <form method="post" action="{% url 'account_logout' %}">
+    {% csrf_token %}
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+    <button type="submit" class="btn btn-warning">Có</button>
+    <a href="{% url 'home' %}">Hủy</a>
+  </form>
+{% endblock content %}

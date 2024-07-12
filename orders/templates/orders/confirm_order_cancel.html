@@ -1,0 +1,16 @@
+{% extends "_base.html" %} 
+{% block title %} Xác nhận hủy đơn hàng {% endblock title %}
+
+{% block content%}
+<h2>Xác nhận hủy đơn hàng</h2>
+<div class="mb-3">
+  <p>Bạn có chắc rằng bạn muốn hủy đơn đặt hàng không "{{ order.order_number }}"?</p>
+  <div class="d-flex">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-sm btn-danger">Có, hủy đơn hàng này</button>
+    </form>
+    <a href="{% url 'order_list' %}" class="ms-3 mt-2">Không, quay lại danh sách đặt hàng</a>
+  </div>
+</div>
+{% endblock content %}

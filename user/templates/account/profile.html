@@ -1,0 +1,23 @@
+{% extends "_base.html" %}
+{% block title %} 
+Gyapu - {{ profile.user.username }}
+{% endblock title %} 
+
+{% block content %}
+  <div class="mb-3">
+    <h1>Chi tiết hồ sơ cá nhân</h1>
+    <p>Username: {{ profile.user.username }}</p>
+    <p>Email: {{ profile.user.email }}</p>
+    <p>Tên: {{ profile.user.full_name }}</p>
+    <p>ĐT: {{ profile.user.mobile }}</p>
+    {% if not user_belong_to_store %}
+    <p>Ngày sinh: {{ profile.birth_date }}</p>
+    <p>Giới tính: {{ profile.get_gender_display }}</p>
+    {% endif %}
+
+    <a href="{% url 'profile_update' %}" class="btn btn-warning mt-2">Chỉnh sửa hồ sơ cá nhân</a>
+    <a href="{% url 'password_change' %}" class="btn btn-warning mt-2">Đổi mật khẩu</a>
+    <a href="{% url 'account_email' %}" class="btn btn-warning mt-2">Emails</a>
+    <a href="{% url 'delete_account' user.id %}" class="btn btn-danger mt-2">Xóa tài khoản</a>
+  </div>
+{% endblock content %}

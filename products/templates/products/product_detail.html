@@ -1,0 +1,157 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ product.name }}{% endblock title %}
+
+{% block link %}
+<style>
+  :root {
+    --textColor: #707B8E;
+  }
+  
+  .nightmode {
+    --textColor: #BEC3CA;
+  }
+
+  .active-image {
+    border: 1px solid #40E0D0;
+  }
+</style>
+{% endblock link %}
+
+{% block content %}
+  {% if product.is_deleted %}
+    <h1 class="text-danger">Không có sản phẩm</h1>
+  {% else %}
+    <div class="product-detail mb-3">
+      <div class="row">
+        <div class="{% if product.images.all %}col{% else %}d-none{% endif %}">
+          <div class="row">
+            <div id="primary-image">
+              {% if primary_image %}
+              <img src="{{ primary_image }}" alt="{{ product.name }}" class="img-fluid" style="min-width:300px;">
+              {% endif %}
+            </div>
+          </div>
+          {% if product.images.count > 1 %}
+            <div class="row">
+              <div class="d-flex flex-row flex-wrap" id="secondary-images">
+                {% for image in product.images.all %}
+                  <div onclick="changeImage(event)" class="secondary-image">
+                    <img class="productimage" src="{{ image.image.url }}" alt="{{ product.name }}" width="80px" height="80px">
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        <div class="col ms-5" style="min-width:300px;">
+          <h2><a href="#">{{ product.name }}</a></h2>
+          <p>Miêu tả: {{ product.description }}</p>
+          <p>Giá: {{ product.price }}</p>
+          {% if product.discount_percentage > 0 %}
+            <p>Chiết khấu: {{ product.discount_percentage }}%</p>
+            <p>Tổng cộng: {{ product.total_amount }}</p>
+          {% endif %}
+          <p>Số lượng: 
+            {% if user_belong_to_store %}
+              {{ product.stock }}
+            {% else %}
+              <button class="btn btn-sm btn-warning float-none" onclick="decrementQuantity()" data-uuid="{{ product.pk }}">-</button>
+              <span id="quantity{{ product.pk }}">1</span>
+              <button class="btn btn-sm btn-warning float-none" onclick="incrementQuantity({{ product.stock }})" data-uuid="{{ product.pk }}">+</button>
+            {% endif %}
+          </p>
+          <p>Thể loại:
+            {% for ancestor in product.category.get_ancestors %}
+              {{ ancestor }} /
+            {% endfor %}
+            {{ product.category }}
+          </p>
+
+          {% if user_belong_to_store %}
+            <a href="{% url 'product_update' product.id %}" class="btn btn-warning">Chỉnh sửa</a>
+            <a href="{% url 'product_delete' pk=product.pk %}" class="btn btn-danger">Xóa</a>
+          {% else %}
+            <p>Cửa hàng: <a href="{% url 'store_profile_for_customer' pk=product.store.id %}">{{ product.store }}</a></p>
+            <form method="post" action={% url 'add_to_cart' product.pk %}>
+              {% csrf_token %}
+              <input type="hidden" id="quantity_input{{ product.pk }}" name="quantity" value="1">
+              <button type="submit" class="btn btn-sm btn-warning float-none">Thêm vào giỏ hàng</button>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if reviews %}
+      <div class="mt-5">
+        <h2>Đánh giá/Reviews</h2>
+        <ul class="list-group" >
+          {% for review in reviews %}
+            <li class="list-group-item" style="color: var(--text-color);">
+              {% if user == review.user %}
+                <div>
+                  <a href="{% url 'review_update' review.id %}">Chỉnh sửa</a>
+                  <a href="{% url 'review_delete' review.id %}" class="text-danger ms-1">Xóa</a>
+                </div>
+              {% endif %}
+              <div>
+                {% for i in rating_range %}
+                  {% if i <= review.rating %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gold" class="bi bi-star-fill" viewBox="0 0 16 16">
+                      <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                  {% else %}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                      <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+                    </svg>
+                  {% endif %}
+                {% endfor %}
+                <span> By {{ review.user.username }}</span>
+                <span class="float-end">{{ review.created_at }}</span>
+              </div>
+              <div>
+                <p>{{ review.review }}</p>
+              </div>
+            </li>
+            <hr>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+  {% endif %}
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const secondaryImages = document.querySelectorAll('.secondary-image');
+    const primaryImg = document.querySelector('#primary-image img');
+
+    secondaryImages.forEach(imageDiv => {
+      const secondaryImg = imageDiv.querySelector('img');
+      if (secondaryImg.getAttribute('src') === primaryImg.getAttribute('src')) {
+        imageDiv.classList.add('active-image');
+      }
+    });
+  });
+
+  function changeImage(event){
+    const currentDiv = event.currentTarget;
+    const primaryImg = document.querySelector('#primary-image img');
+    let currentImg = currentDiv.querySelector('img');
+    let primaryImgSrc = primaryImg.getAttribute('src');
+    let currentImgSrc = currentImg.getAttribute('src');
+
+    if(primaryImgSrc !== currentImgSrc) {
+      primaryImg.setAttribute('src', currentImgSrc);
+    }
+
+    const secondaryImages = document.querySelectorAll('.secondary-image');
+    secondaryImages.forEach(image => {
+      image.classList.remove('active-image');
+    });
+    currentDiv.classList.add('active-image');
+  }
+</script>
+{% endblock scripts %}

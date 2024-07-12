@@ -1,0 +1,41 @@
+{% extends "_emptybase.html" %}
+{% comment %} needs to be loaded eventhough loaded in base template {% endcomment %}
+{% load i18n %}
+{% load account %}
+{% load allauth %}
+
+{% block title %}
+  Xác nhận địa chỉ email
+{% endblock title %}
+{% block content %}
+  <h1>
+    Xác nhận địa chỉ email
+  </h1>
+  {% if confirmation %}
+    {% user_display confirmation.email_address.user as user_display %}
+    {% if can_confirm %}
+      <p>
+        Vui lòng xác nhận rằng <a href="mailto:{{ confirmation.email_address.email }}">{{ confirmation.email_address.email }}</a> is an email address for user {{ user_display }}.
+      </p>
+      {% url 'account_confirm_email' confirmation.key as action_url %}
+      <form method="post" action="{{ action_url }}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning">Confirm</button>
+      </form>
+    {% else %}
+      <p>
+        Không thể xác nhận {{ confirmation.email_address.email }} vì nó đã được xác nhận bởi một tài khoản khác.
+      </p>
+    {% endif %}
+  {% else %}
+    {% url 'account_email' as email_url %}
+    <p>
+      Liên kết xác nhận email này đã hết hạn hoặc không hợp lệ. Vui lòng <a href="{{ email_url }}"> đưa ra yêu cầu xác nhận email mới</a>.
+    </p>
+  {% endif %}
+{% endblock content %}
+
+
+{% comment %} chạy khi người dùng truy cập liên kết trong email {% endcomment %}
+{% comment %} source: allauth source code {% endcomment %}
+{% comment %} URL: allauth/templates/account/email_confirm.html {% endcomment %}

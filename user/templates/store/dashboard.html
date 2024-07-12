@@ -1,0 +1,34 @@
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}
+  {% if user_belong_to_store %}
+    Store Dashboard
+  {% else %}
+    {{ store.username }} TT cá nhân
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="feature-list pb-3">
+  {% if user_belong_to_store %}
+    <h1>Chào mừng đến với Dashboard của bạn</h1>
+  {% else %}
+    <h1 class="text-center">{{ store.username }}</h1>
+    <h3>TT liên hệ:</h3>
+    <p>Email: {{ store.email }}</p>
+    <p>SĐT: {{ store.mobile }}</p>
+  {% endif %}
+
+  {% if products %}
+  <div class="categories"> 
+    {% with products as products %}
+      {% with 'Products' as section_title %}
+        {% comment %} set is_categoryPage to true just to use it in product_box.html {% endcomment %}
+        {% include 'products/product_box.html' with is_categoryPage=True %}
+      {% endwith %}
+    {% endwith %}
+  </div>
+  {% endif %}
+  
+</section>
+{% endblock %}

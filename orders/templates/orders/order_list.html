@@ -1,0 +1,34 @@
+{% extends '_base.html' %}
+
+{% block title %}Danh sách đặt hàng{% endblock %}
+
+{% block content %}
+  <h1>Danh sách đặt hàng</h1>
+
+  <ul class="nav nav-tabs" id="orderTabs" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active" id="pending-tab" data-bs-toggle="tab" href="#pending" role="tab" aria-controls="pending" aria-selected="true">Đang chờ xử lý</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="delivered-tab" data-bs-toggle="tab" href="#processing" role="tab" aria-controls="processing" aria-selected="false">Đang xử lý</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="delivered-tab" data-bs-toggle="tab" href="#shipped" role="tab" aria-controls="shipped" aria-selected="false">Đã vận chuyển</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="delivered-tab" data-bs-toggle="tab" href="#delivered" role="tab" aria-controls="delivered" aria-selected="false">Đã giao hàng</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="delivered-tab" data-bs-toggle="tab" href="#cancelled" role="tab" aria-controls="cancelled" aria-selected="false">Đã hủy</a>
+    </li>
+  </ul>
+  
+  <div class="tab-content" id="orderTabsContent">
+    {% comment %} include another template to reduce code repetancy {% endcomment %}
+    {% include 'orders/order_list_tab.html' with orders=pending_orders tab_id='pending' active='true' %}
+    {% include 'orders/order_list_tab.html' with orders=processing_orders tab_id='processing' active='false' %}
+    {% include 'orders/order_list_tab.html' with orders=shipped_orders tab_id='shipped' active='false' %}
+    {% include 'orders/order_list_tab.html' with orders=delivered_orders tab_id='delivered' active='false' %}
+    {% include 'orders/order_list_tab.html' with orders=cancelled_orders tab_id='cancelled' active='false' %}
+  </div>
+{% endblock %}

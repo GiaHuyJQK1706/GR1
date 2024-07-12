@@ -1,0 +1,19 @@
+{% extends "_base.html" %}
+
+{% block title %}Xóa tài khoản{% endblock title %}
+
+{% block content %}
+  <div>
+    <h2>Xóa tài khoản</h2>
+    <p>Bạn có muốn xóa tài khoản của bạn không?</p>
+    <p><strong>Chú ý:</strong> Nếu bạn xóa tài khoản của mình, bạn sẽ không thể sử dụng email này để đăng ký lại.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="password" class="form-label">Nhập mật khẩu:</label>
+          <input type="password" id="password" name="password">
+        </div>
+        <input type="submit" value="Confirm Deletion" class="btn btn-warning">
+    </form>
+  </div>
+{% endblock content %}

@@ -1,0 +1,25 @@
+{% extends '_base.html' %}
+
+{% block title %}{{ user.username }} Địa chỉ {% endblock %}
+
+{% block content %}
+  <div class="d-flex justify-content-between mb-5">
+    <h2>Địa chỉ sách</h2>
+    <a href="{% url 'address_add' %}" class="text-danger link-underline link-underline-opacity-0"><strong>+ Thêm</strong></a>
+  </div>
+  {% if address_list %}
+    <table class="table">
+      <tbody>
+        {% for address in address_list %}
+          <tr>
+            <td>{{ address.province }}, {{ address.city }}-{{ address.tole }}, {{ address.area }}</td>
+            <td><a href="{% url 'address_update' address.id %}">Chỉnh sửa</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <h4 class="text-danger">Không có địa chỉ có sẵn.</h4>
+  {% endif %}
+  
+{% endblock %}

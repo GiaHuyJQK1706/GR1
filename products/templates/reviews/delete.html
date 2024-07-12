@@ -1,0 +1,16 @@
+{% extends "_base.html" %} 
+{% block title %} Xóa review {% endblock title %}
+
+{% block content%}
+<h2>Xóa review</h2>
+<div class="mb-3">
+  <p>Bạn có muốn xóa review cho "{{ review.order_item.product.name }}"?</p>
+  <div class="d-flex">
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+    </form>
+    <a href="{% url 'product_detail' review.order_item.product.id %}" class="ms-3 mt-2">Hủy</a>
+  </div>
+</div>
+{% endblock content %}

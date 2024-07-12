@@ -1,0 +1,5 @@
+{% comment %} email subject {% endcomment %}
+{% load i18n %}
+{% autoescape off %}
+{% blocktrans %}Vui lòng xác nhận địa chỉ email của bạn{% endblocktrans %}
+{% endautoescape %}

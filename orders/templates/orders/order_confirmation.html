@@ -1,0 +1,53 @@
+{% extends "_base.html" %} 
+{% block title %} Xác nhận đơn hàng {% endblock title %}
+
+{% block content%}
+<h2 class="mb-5">Xác nhận đơn hàng</h2>
+<div class="mb-3">
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-5">
+      <h4>Địa chỉ giao hàng</h4>
+        {% if addresses %}
+          <table class="table">
+            {% for address in addresses %}
+              <tr>
+                <td>
+                  <label>
+                    <input type="radio" name="selected_address" value="{{ address.id }}" {% if forloop.first %}checked{% endif %}>
+                    {{address.user.full_name }}--> {{ address.province }}, {{ address.city }}-{{ address.tole }}, {{ address.area }}
+                  </label>
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+        {% else %}
+          <h6 class="text-danger">Không có địa chỉ giao hàng. Vui lòng thêm địa chỉ giao hàng để tiếp tục.</h6>
+        {% endif %}
+    </div>
+
+    <div class="mb-5">
+      <h4>Phương thức thanh toán</h4>
+      {% for field in payment_form %}
+      <div class="mb-3">
+        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+        {{ field }}
+      </div>
+      {% endfor %}
+    </div>
+    {% if addresses %}
+      <div class="d-flex">
+        <button type="submit" name="confirm_order" class="btn btn-sm btn-warning">Đặt hàng</button>
+        <a href="{% url 'cart_detail' %}" class="ms-3 mt-2">Không, quay lại danh sách đặt hàng</a>
+      </div>
+    {% endif %}
+  </form>
+  {% if not addresses %}
+    <div class="d-flex">
+      <a href="{% url 'address_add' %}?source=checkout"><button class="btn btn-sm btn-warning">Thêm địa chỉ</button></a>
+      <a href="{% url 'cart_detail' %}" class="ms-3 mt-2">Không, quay lại danh sách đặt hàng</a>
+    </div>
+  {% endif %}
+  
+</div>
+{% endblock content %}

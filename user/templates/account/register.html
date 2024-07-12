@@ -1,0 +1,266 @@
+{% extends "_base.html" %}
+{% load static %}
+{% load socialaccount %}
+{% block title %} 
+Gyapu - Account
+{% endblock title %} 
+
+{% block link %}
+<link rel="stylesheet" href="{% static 'css/account.css' %}" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+{% endblock link %}
+
+{% block path %}
+<div class="path">
+  <div class="container pt-2">
+    <div class="d-flex ms-xl-5">
+      <div class="d-none d-md-block">
+        <div class="d-flex">
+          <div class="path-home">
+            <a href="{% url 'home' %}">
+              <div class="d-flex">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  fill="currentColor"
+                  class="bi bi-house-door-fill"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0
+                    .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 
+                    0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 
+                    .5.5h4a.5.5 0 0 0 .5-.5z"
+                  />
+                </svg>
+              </div>
+            </a>
+          </div>
+          <div class="path-arrow pt-1 ps-1">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="12"
+              fill="currentColor"
+              class="bi bi-chevron-right"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-block d-md-none pt-0 pe-1">
+        <div class="path-left-arrow">
+          <a href="{% url 'home' %}">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-left"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="path-body ps-1">
+        <p>Account</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="register-login p-3">
+  <div class="container-xxl">
+    <div class="row justify-content-center">
+      <div class="card-box col-md-6">
+        <div class="register-block py-4 px-3 mx-2">
+          <h3>REGISTER</h3>
+          <form action="{% url 'account_signup' %}" method="POST">
+            {% csrf_token %}
+            <div class="mb-2 mt-3">
+              <label for="full_name" class="form-label">NAME</label>
+              <input
+                type="text"
+                class="form-control"
+                id="full_name"
+                name="full_name"
+                required
+              />
+            </div>
+            <div class="mb-2">
+              <label for="mobile" class="form-label">MOBILE</label>
+              <div class="d-flex">
+                <select class="form-select me-1">
+                  <option selected>+84</option>
+                  <option selected>+1</option>
+                  <option selected>0</option>
+                </select>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="mobile"
+                  name="mobile"
+                  required
+                />
+              </div>
+            </div>
+            <div class="mb-2">
+              <label for="email" class="form-label"
+                >EMAIL ADDRESS</label
+              >
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+                required
+              />
+            </div>
+            <div class="pwd mb-2">
+              <label for="password1" class="form-label">PASSWORD</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password1"
+                name="password1"
+                required
+              />
+              <img
+                class="password-visibility"
+                id="register-pwd-visibility-image"
+                src="{% static "images/account/visibility_off.svg" %}"
+                alt="password visibility"
+              />
+            </div>
+            <div class="pwd mb-2">
+              <label for="password2" class="form-label"
+                >CONFIRM PASSWORD</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="password2"
+                name="password2"
+                required
+              />
+              <img
+                class="password-visibility"
+                id="register-pwd-confirm-visibility-image"
+                src="{% static "images/account/visibility_off.svg" %}"
+                alt="password visibility"
+              />
+            </div>
+
+            <div class="form-check mt-3 mb-2">
+              <div class="terms">
+                <p>By Clicking Register, You Agree To Our Terms & Conditions</p>
+              </div>
+              <div class="register-checkbox">
+                <label class="form-check-label">
+                  <input
+                    class="form-check-input ms-1 me-2 mt-2"
+                    type="checkbox"
+                    name="acceptance"
+                    required
+                  />
+                  I Want To Accept Promotional Emails And Offers.
+                </label>
+              </div>
+            </div>
+            <div>
+              <button type="submit">Register</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="card-box col-md-6">
+        <div class="login-block py-4 px-3 mx-2">
+          <h3>LOGIN</h3>
+          <form method='POST' action="{% url 'account_login' %}?next={{ request.GET.next }}">
+            {% csrf_token %}
+            <div class="mb-2 mt-3">
+              <label for="login" class="form-label">EMAIL</label>
+              <input
+                type="email"
+                class="form-control"
+                id="login"
+                name="login"    
+                required            
+              />
+              {% comment %} {{ form.email }} {% endcomment %}
+            </div>
+            <div class="pwd">
+              <label for="password" class="form-label">PASSWORD</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                required
+              />
+              {% comment %} {{ form.password }} {% endcomment %}
+              <img
+                class="password-visibility"
+                id="login-pwd-visibility-image"
+                src="{% static "images/account/visibility_off.svg" %}"
+                alt="password visibility"
+              />
+            </div>
+            <div class="forgot-pwd">
+              <a href="{% url 'account_reset_password' %}"> Forgot Password? </a>
+            </div>
+            <div>
+              <button type="submit">Login</button>
+            </div>
+          </form>
+
+          <div class="or-login my-2">OR LOGIN WITH</div>
+          <div class="or-login-choices">
+            <div class="row">
+              <div class="col facebook">
+                <span>
+                  <img src="{% static "images/account/facebook.png" %}" alt="facebook logo" />
+                </span>
+                Facebook
+              </div>
+              <div class="col google">
+                <a href="{% provider_login_url 'google' %}">
+                  <span class="pe-3">
+                    <img src="{% static "images/account/google.png" %}" alt="google logo" />
+                  </span>
+                  Google
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/account.js' %}"></script>
+{% endblock %}
